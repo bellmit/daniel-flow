@@ -4,13 +4,17 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>flow-parent</artifactId>
-        <groupId>io.daniel</groupId>
+        <groupId>io.daniel.flow</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>flow-executor</artifactId>
-    <version>${project.version</version>
+    <packaging>pom</packaging>
+    <version>0.0.1-SNAPSHOT</version>
+    <modules>
+        <module>executor-app</module>
+    </modules>
 
     <dependencies>
         <dependency>

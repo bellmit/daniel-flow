@@ -3,25 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>flow-parent</artifactId>
+        <artifactId>flow-portal</artifactId>
         <groupId>io.daniel.flow</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>flow-portal</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>portal-app</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-
-    <modules>
-        <module>portal-app</module>
-    </modules>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-    </dependencies>
 
 </project>
