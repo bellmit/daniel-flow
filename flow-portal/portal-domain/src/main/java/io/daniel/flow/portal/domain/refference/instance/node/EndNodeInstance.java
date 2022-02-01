@@ -1,5 +1,6 @@
 package io.daniel.flow.portal.domain.refference.instance.node;
 
+import io.daniel.flow.portal.domain.enums.FlowInstanceState;
 import io.daniel.flow.portal.domain.enums.NodeType;
 import io.daniel.flow.portal.domain.refference.context.Execution;
 import io.daniel.flow.portal.domain.refference.definition.node.EndNodeDefinition;
@@ -22,8 +23,8 @@ public class EndNodeInstance extends AbstractNodeInstance<EndNodeDefinition> {
     }
 
     @Override
-    public Execution execute(Execution execution) {
-        return null;
+    public void execute(Execution execution) {
+        execution.getFlowInstance().setState(FlowInstanceState.FINISH);
     }
 
     @Override

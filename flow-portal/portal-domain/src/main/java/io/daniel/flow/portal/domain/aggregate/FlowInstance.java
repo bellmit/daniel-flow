@@ -1,6 +1,7 @@
 package io.daniel.flow.portal.domain.aggregate;
 
 import io.daniel.flow.connector.domain.TaskExecuteResult;
+import io.daniel.flow.portal.domain.enums.FlowInstanceState;
 import io.daniel.flow.portal.domain.enums.NodeType;
 import io.daniel.flow.portal.domain.refference.context.Context;
 import io.daniel.flow.portal.domain.refference.context.Execution;
@@ -25,15 +26,19 @@ public class FlowInstance implements Instance<FlowDefinition> {
 
     private String instanceId;
     private FlowDefinition definition;
+    private FlowInstanceState state;
     private Context context;
     private Set<AbstractNodeInstance<? extends AbstractNodeDefinition>> nodes;
-    private Set<EdgeInstance> edgs;
+    private Set<EdgeInstance> edges;
 
     @Override
     public FlowDefinition getDefinition() {
         return definition;
     }
 
+    /**
+     * 每次对流程实例的一次事务操作，都初始化一个Execution
+     */
     private Execution initTransaction(TaskExecuteResult callback) {
         Execution execution = new Execution();
         execution.setCallback(callback);
@@ -46,30 +51,40 @@ public class FlowInstance implements Instance<FlowDefinition> {
      * 开始一个流程实例
      */
     public Execution start() {
-        return findStart().execute(initTransaction(null));
+        Execution execution = initTransaction(null);
+        findStart().execute(execution);
+        return execution;
     }
 
     public Execution start(StartNodeInstance startNode) {
-        return startNode.execute(initTransaction(null));
+        Execution execution = initTransaction(null);
+        startNode.execute(execution);
+        return execution;
     }
 
     /**
      * 推进一个流程节点
      */
     public Execution resume(String nodeCode) {
-        return findNode(nodeCode).execute(initTransaction(null));
+        Execution execution = initTransaction(null);
+        findNode(nodeCode).execute(execution);
+        return execution;
     }
 
     public Execution resume(String nodeCode, Map<String, String> addition) {
         context.merge(addition);
-        return findNode(nodeCode).execute(initTransaction(null));
+        Execution execution = initTransaction(null);
+        findNode(nodeCode).execute(execution);
+        return execution;
     }
 
     /**
      * 处理任务执行结果
      */
     public Execution handleCallback(TaskExecuteResult result) {
-        return findNode(result.getNodeCode()).execute(initTransaction(result));
+        Execution execution = initTransaction(result);
+        findNode(result.getNodeCode()).execute(execution);
+        return execution;
     }
 
     protected AbstractNodeInstance<? extends AbstractNodeDefinition> findStart() {
@@ -90,11 +105,11 @@ public class FlowInstance implements Instance<FlowDefinition> {
         throw new RuntimeException("该流程实例未找到相应的节点实例");
     }
 
-    protected EdgeInstance createEdge(EdgeDefinition definition) {
+    public EdgeInstance createEdge(EdgeDefinition definition) {
         return null;
     }
 
-    protected AbstractNodeInstance<? extends AbstractNodeDefinition> createNode(AbstractNodeDefinition definition) {
+    public AbstractNodeInstance<? extends AbstractNodeDefinition> createNode(AbstractNodeDefinition definition) {
         return null;
     }
 

@@ -11,6 +11,7 @@ public enum NodeInstanceState {
     INIT("INIT"),
     PENDING("PENDING"),
     RUNNING("RUNNING"),
+    FINISH("FINISH"),
     SKIPPED("SKIPPED"),
     CANCELED("CANCELED"),
     ERROR("ERROR"),

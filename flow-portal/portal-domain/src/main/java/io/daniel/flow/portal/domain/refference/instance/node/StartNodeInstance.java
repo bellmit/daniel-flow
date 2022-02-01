@@ -24,8 +24,8 @@ public class StartNodeInstance extends AbstractNodeInstance<StartNodeDefinition>
     }
 
     @Override
-    public Execution execute(Execution execution) {
-        return null;
+    public void execute(Execution execution) {
+        createEdgesAndAutoExecute(execution);
     }
 
     @Override

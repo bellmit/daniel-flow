@@ -5,12 +5,14 @@ import io.daniel.flow.portal.domain.refference.context.Execution;
 import io.daniel.flow.portal.domain.refference.definition.task.TaskDefinition;
 import io.daniel.flow.portal.domain.refference.instance.Instance;
 import io.daniel.flow.portal.domain.support.Action;
+import lombok.Data;
 
 /**
  * @author neason-cn
  * @date 2022/2/1
  */
-public class TaskInstance implements Instance<TaskDefinition>, Action {
+@Data
+public class TaskInstance implements Instance<TaskDefinition>, Action, Cloneable {
 
     private TaskDefinition definition;
     private TaskResultState state;
@@ -22,7 +24,15 @@ public class TaskInstance implements Instance<TaskDefinition>, Action {
     }
 
     @Override
-    public Execution execute(Execution execution) {
-        return null;
+    public void execute(Execution execution) {
+    }
+
+    @Override
+    public TaskInstance clone() {
+        TaskInstance clone = new TaskInstance();
+        clone.setDefinition(definition);
+        clone.setState(state);
+        clone.setResult(result);
+        return clone;
     }
 }

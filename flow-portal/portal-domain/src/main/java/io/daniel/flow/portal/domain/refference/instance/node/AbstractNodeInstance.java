@@ -1,6 +1,8 @@
 package io.daniel.flow.portal.domain.refference.instance.node;
 
+import io.daniel.flow.portal.domain.aggregate.FlowInstance;
 import io.daniel.flow.portal.domain.enums.NodeInstanceState;
+import io.daniel.flow.portal.domain.refference.context.Execution;
 import io.daniel.flow.portal.domain.refference.definition.node.AbstractNodeDefinition;
 import io.daniel.flow.portal.domain.refference.instance.Instance;
 import io.daniel.flow.portal.domain.refference.instance.edge.EdgeInstance;
@@ -8,6 +10,7 @@ import io.daniel.flow.portal.domain.support.Action;
 import io.daniel.flow.portal.domain.support.graph.Node;
 import lombok.Data;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -17,9 +20,9 @@ import java.util.Set;
 @Data
 public abstract class AbstractNodeInstance<T extends AbstractNodeDefinition> implements Instance<T>, Node<EdgeInstance>, Action {
 
-    private NodeInstanceState state;
-    private Set<EdgeInstance> incoming;
-    private Set<EdgeInstance> outgoing;
+    protected NodeInstanceState state;
+    protected Set<EdgeInstance> incoming;
+    protected Set<EdgeInstance> outgoing;
 
     @Override
     public Set<EdgeInstance> incoming() {
@@ -30,4 +33,26 @@ public abstract class AbstractNodeInstance<T extends AbstractNodeDefinition> imp
     public Set<EdgeInstance> outgoing() {
         return outgoing;
     }
+
+    /**
+     * 创建节点后面的边，并自动执行边的execute
+     *
+     * @param execution
+     */
+    protected void createEdgesAndAutoExecute(Execution execution) {
+        createEdges(execution).forEach(edgeInstance -> edgeInstance.execute(execution));
+        this.setState(NodeInstanceState.FINISH);
+    }
+
+    private Set<EdgeInstance> createEdges(Execution execution) {
+        FlowInstance flowInstance = execution.getFlowInstance();
+        Set<EdgeInstance> edges = new HashSet<>();
+        this.getDefinition().getOutgoing().forEach(definition -> {
+            EdgeInstance edge = flowInstance.createEdge(definition);
+            edges.add(edge);
+        });
+        this.outgoing = edges;
+        return edges;
+    }
+
 }

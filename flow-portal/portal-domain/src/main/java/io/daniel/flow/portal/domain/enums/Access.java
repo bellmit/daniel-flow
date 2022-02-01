@@ -1,6 +1,7 @@
 package io.daniel.flow.portal.domain.enums;
 
 import io.daniel.flow.portal.domain.support.Accessible;
+import lombok.Getter;
 
 /**
  * @author neason-cn
@@ -13,10 +14,11 @@ public enum Access implements Accessible {
 
     ;
 
-    private final boolean value;
+    @Getter
+    private final boolean allow;
 
-    Access(boolean value) {
-        this.value = value;
+    Access(boolean allow) {
+        this.allow = allow;
     }
 
     @Override
