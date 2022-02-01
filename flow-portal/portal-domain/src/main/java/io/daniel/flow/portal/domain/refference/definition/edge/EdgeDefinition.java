@@ -2,7 +2,7 @@ package io.daniel.flow.portal.domain.refference.definition.edge;
 
 import io.daniel.flow.portal.domain.refference.context.Expression;
 import io.daniel.flow.portal.domain.refference.definition.Definition;
-import io.daniel.flow.portal.domain.refference.definition.node.NodeDefinition;
+import io.daniel.flow.portal.domain.refference.definition.node.AbstractNodeDefinition;
 import io.daniel.flow.portal.domain.support.graph.Edge;
 import lombok.Data;
 
@@ -16,7 +16,7 @@ import java.util.Set;
  * @date 2022/2/1
  */
 @Data
-public class EdgeDefinition implements Definition, Edge<NodeDefinition> {
+public class EdgeDefinition implements Definition, Edge<AbstractNodeDefinition> {
 
     private String code;
     private String name;
@@ -29,17 +29,17 @@ public class EdgeDefinition implements Definition, Edge<NodeDefinition> {
     /**
      * 推进表达式，该表达式成立才会往下推进
      */
-    private Expression expression;
+    private Expression condition;
 
     /**
      * 边的入口
      */
-    private NodeDefinition source;
+    private AbstractNodeDefinition source;
 
     /**
      * 边的出口
      */
-    private NodeDefinition target;
+    private AbstractNodeDefinition target;
 
     public String getDefinitionCode() {
         return code;
@@ -49,11 +49,11 @@ public class EdgeDefinition implements Definition, Edge<NodeDefinition> {
         return name;
     }
 
-    public Set<NodeDefinition> incoming() {
+    public Set<AbstractNodeDefinition> incoming() {
         return Collections.singleton(source);
     }
 
-    public Set<NodeDefinition> outgoing() {
+    public Set<AbstractNodeDefinition> outgoing() {
         return Collections.singleton(target);
     }
 

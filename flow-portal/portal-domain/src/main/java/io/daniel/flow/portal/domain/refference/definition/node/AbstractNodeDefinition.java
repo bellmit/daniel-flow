@@ -12,24 +12,26 @@ import java.util.Set;
  * @date 2022/2/1
  */
 @Data
-public class NodeDefinition implements Definition, Node<EdgeDefinition> {
+public abstract class AbstractNodeDefinition implements Definition, Node<EdgeDefinition> {
 
     private String code;
     private String name;
+    private Set<EdgeDefinition> incoming;
+    private Set<EdgeDefinition> outgoing;
 
     public Set<EdgeDefinition> incoming() {
-        return null;
+        return incoming;
     }
 
     public Set<EdgeDefinition> outgoing() {
-        return null;
+        return outgoing;
     }
 
     public String getDefinitionCode() {
-        return null;
+        return code;
     }
 
     public String getDefinitionName() {
-        return null;
+        return name;
     }
 }
