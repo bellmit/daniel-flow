@@ -12,4 +12,15 @@
     <artifactId>portal-app</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
+    <dependencies>
+        <dependency>
+            <groupId>io.daniel.flow</groupId>
+            <artifactId>portal-domain</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.daniel.flow</groupId>
+            <artifactId>flow-connector</artifactId>
+        </dependency>
+    </dependencies>
+
 </project>
