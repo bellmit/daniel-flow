@@ -1,5 +1,6 @@
 package io.daniel.flow.portal.domain.refference.definition.task;
 
+import io.daniel.flow.connector.domain.enums.TaskType;
 import io.daniel.flow.portal.domain.refference.definition.Definition;
 import lombok.Data;
 
@@ -14,6 +15,11 @@ public class TaskDefinition implements Definition {
 
     private String code;
     private String name;
+
+    /**
+     * 任务类型
+     */
+    private TaskType type;
 
     /**
      * 是否自动执行
