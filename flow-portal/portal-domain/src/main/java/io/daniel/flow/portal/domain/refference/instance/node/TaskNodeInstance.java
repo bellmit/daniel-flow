@@ -40,7 +40,7 @@ public class TaskNodeInstance extends AbstractNodeInstance<TaskNodeDefinition> {
                 if (execution.getCallback() != null) {
                     handleCallback(execution);
                 } else {
-                    resumeNewTask(execution);
+                    popAndRunNewTask(execution);
                 }
             }
         } else {
@@ -93,7 +93,7 @@ public class TaskNodeInstance extends AbstractNodeInstance<TaskNodeDefinition> {
             } else {
                 TaskDefinition taskDefinition = popTask();
                 if (taskDefinition.isEnableAutoResume()) {
-                    resumeNewTask(execution);
+                    popAndRunNewTask(execution);
                 } else {
                     keepWaiting();
                 }
@@ -109,7 +109,7 @@ public class TaskNodeInstance extends AbstractNodeInstance<TaskNodeDefinition> {
         return left == null || popTask() == null;
     }
 
-    private void resumeNewTask(Execution execution) {
+    private void popAndRunNewTask(Execution execution) {
         TaskDefinition taskDefinition = popTask();
         TaskInstance taskInstance = new TaskInstance();
         taskInstance.setDefinition(taskDefinition);
