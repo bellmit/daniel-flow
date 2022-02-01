@@ -54,7 +54,7 @@ public class TaskNodeInstance extends AbstractNodeInstance<TaskNodeDefinition> {
     }
 
     /**
-     * 该节点能否进入可处理任务的状态
+     * 是否满足join条件
      */
     private boolean canAccept() {
         if (joinMode == JoinMode.WAIT_ANY) {
@@ -114,6 +114,7 @@ public class TaskNodeInstance extends AbstractNodeInstance<TaskNodeDefinition> {
         TaskInstance taskInstance = new TaskInstance();
         taskInstance.setDefinition(taskDefinition);
         taskInstance.setState(TaskResultState.RUNNING);
+        running = taskInstance;
         execution.getTasks().add(taskInstance);
     }
 
