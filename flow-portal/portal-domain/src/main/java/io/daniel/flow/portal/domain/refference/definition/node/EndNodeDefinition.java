@@ -8,7 +8,7 @@ import io.daniel.flow.portal.domain.enums.NodeType;
  * @author neason-cn
  * @date 2022/2/1
  */
-public class EndNodeDefition extends AbstractNodeDefinition {
+public class EndNodeDefinition extends AbstractNodeDefinition {
 
     public NodeType getType() {
         return NodeType.END;

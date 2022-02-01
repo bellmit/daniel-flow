@@ -35,8 +35,8 @@ public class EdgeInstance implements Edge<AbstractNodeInstance<? extends Abstrac
     }
 
     @Override
-    public void execute(Execution execution) {
-
+    public Execution execute(Execution execution) {
+        return null;
     }
 
     @Override

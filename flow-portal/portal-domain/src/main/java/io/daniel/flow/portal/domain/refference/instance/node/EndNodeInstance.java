@@ -2,7 +2,7 @@ package io.daniel.flow.portal.domain.refference.instance.node;
 
 import io.daniel.flow.portal.domain.enums.NodeType;
 import io.daniel.flow.portal.domain.refference.context.Execution;
-import io.daniel.flow.portal.domain.refference.definition.node.EndNodeDefition;
+import io.daniel.flow.portal.domain.refference.definition.node.EndNodeDefinition;
 import io.daniel.flow.portal.domain.refference.instance.edge.EdgeInstance;
 
 import java.util.Collections;
@@ -12,18 +12,18 @@ import java.util.Set;
  * @author neason-cn
  * @date 2022/2/1
  */
-public class EndNodeInstance extends AbstractNodeInstance<EndNodeDefition> {
+public class EndNodeInstance extends AbstractNodeInstance<EndNodeDefinition> {
 
-    private EndNodeDefition defition;
+    private EndNodeDefinition defition;
 
     @Override
-    public EndNodeDefition getDefinition() {
+    public EndNodeDefinition getDefinition() {
         return defition;
     }
 
     @Override
-    public void execute(Execution execution) {
-
+    public Execution execute(Execution execution) {
+        return null;
     }
 
     @Override

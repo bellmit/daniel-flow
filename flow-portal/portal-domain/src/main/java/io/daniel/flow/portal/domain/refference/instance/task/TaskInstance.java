@@ -22,7 +22,7 @@ public class TaskInstance implements Instance<TaskDefinition>, Action {
     }
 
     @Override
-    public void execute(Execution execution) {
-
+    public Execution execute(Execution execution) {
+        return null;
     }
 }

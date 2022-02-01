@@ -10,6 +10,6 @@ import io.daniel.flow.portal.domain.refference.context.Execution;
  */
 public interface Action {
 
-    void execute(Execution execution);
+    Execution execute(Execution execution);
 
 }

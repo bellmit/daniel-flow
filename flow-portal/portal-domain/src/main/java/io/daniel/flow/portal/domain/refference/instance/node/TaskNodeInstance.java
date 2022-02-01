@@ -27,8 +27,8 @@ public class TaskNodeInstance extends AbstractNodeInstance<TaskNodeDefinition> {
     }
 
     @Override
-    public void execute(Execution execution) {
-
+    public Execution execute(Execution execution) {
+        return null;
     }
 
     @Override
