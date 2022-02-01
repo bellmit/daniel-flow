@@ -11,11 +11,16 @@
 
     <artifactId>flow-portal</artifactId>
     <packaging>pom</packaging>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>${portal.version</version>
+
+    <properties>
+        <portal.version>0.0.1-SNAPSHOT</portal.version>
+    </properties>
 
     <modules>
         <module>portal-app</module>
         <module>portal-domain</module>
+        <module>portal-infrastructure</module>
     </modules>
 
     <dependencies>
@@ -28,12 +33,17 @@
             <dependency>
                 <groupId>io.daniel.flow</groupId>
                 <artifactId>portal-domain</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
+                <version>${portal.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.daniel.flow</groupId>
                 <artifactId>portal-app</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
+                <version>${portal.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.daniel.flow</groupId>
+                <artifactId>portal-infrastructure</artifactId>
+                <version>${portal.version}</version>
             </dependency>
 
             <!-- connector module -->
