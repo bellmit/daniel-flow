@@ -1,5 +1,7 @@
 package io.daniel.flow.portal.domain.util;
 
+import com.ql.util.express.DefaultContext;
+import com.ql.util.express.ExpressRunner;
 import io.daniel.flow.portal.domain.refference.context.Expression;
 
 import java.util.regex.Matcher;
@@ -13,26 +15,20 @@ import java.util.regex.Pattern;
  */
 public class ScriptUtil {
 
-    private static final Pattern CONTEXT_PARTEN = Pattern.compile("(\\$\\{(context.*?)\\})");
+    private static final Pattern CONTEXT_PATTERN = Pattern.compile("(\\$\\{(context\\..*?)\\})");
 
-    public static String initContextExpress(Expression expression) {
-        if (expression == null) {
+    /**
+     * 标识符替换，去除${}
+     */
+    public static String extract(Expression expression) {
+        if (expression == null || expression.getExpression() == null) {
             return null;
         }
-        Matcher matcher = CONTEXT_PARTEN.matcher(expression.getExpression());
+        Matcher matcher = CONTEXT_PATTERN.matcher(expression.getExpression());
         if (matcher.find()) {
             return matcher.replaceAll("$2");
         }
-        return null;
+        return expression.getExpression();
     }
-
-    public static void main(String[] args) {
-        String express = "${context.name} + ${context.age.a.a} + 2 + ${context.12.123.213}" ;
-        Expression expression = new Expression();
-        expression.setExpression(express);
-
-        System.out.println(ScriptUtil.initContextExpress(expression));
-    }
-
 
 }
