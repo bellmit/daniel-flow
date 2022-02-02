@@ -5,4 +5,9 @@ package io.daniel.flow.portal.infra.script;
  * @date 2022/2/2
  */
 public enum ScriptType {
+
+    QLExpress,
+    GROOVY,
+    SHELL
+
 }

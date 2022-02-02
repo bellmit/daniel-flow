@@ -11,10 +11,4 @@
 
     <artifactId>portal-domain</artifactId>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>QLExpress</artifactId>
-        </dependency>
-    </dependencies>
 </project>
