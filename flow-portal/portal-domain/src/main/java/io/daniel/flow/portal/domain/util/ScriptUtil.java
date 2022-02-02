@@ -1,7 +1,5 @@
 package io.daniel.flow.portal.domain.util;
 
-import com.ql.util.express.DefaultContext;
-import com.ql.util.express.ExpressRunner;
 import io.daniel.flow.portal.domain.refference.context.Expression;
 
 import java.util.regex.Matcher;
@@ -19,6 +17,7 @@ public class ScriptUtil {
 
     /**
      * 标识符替换，去除${}
+     * ${context.person.age} -> context.person.age
      */
     public static String extract(Expression expression) {
         if (expression == null || expression.getExpression() == null) {
