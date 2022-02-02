@@ -89,6 +89,7 @@ public class TaskNodeInstance extends AbstractNodeInstance<TaskNodeDefinition> {
             done.add(running.clone());
             running = null;
             if (allTaskDone()) {
+                this.setState(NodeInstanceState.FINISH);
                 createEdgesAndAutoExecute(execution);
             } else {
                 TaskDefinition taskDefinition = popTask();

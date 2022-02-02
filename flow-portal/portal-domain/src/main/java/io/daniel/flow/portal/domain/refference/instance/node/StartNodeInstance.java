@@ -1,5 +1,6 @@
 package io.daniel.flow.portal.domain.refference.instance.node;
 
+import io.daniel.flow.portal.domain.enums.NodeInstanceState;
 import io.daniel.flow.portal.domain.enums.NodeType;
 import io.daniel.flow.portal.domain.refference.context.Execution;
 import io.daniel.flow.portal.domain.refference.definition.node.StartNodeDefinition;
@@ -25,6 +26,7 @@ public class StartNodeInstance extends AbstractNodeInstance<StartNodeDefinition>
 
     @Override
     public void execute(Execution execution) {
+        this.setState(NodeInstanceState.FINISH);
         createEdgesAndAutoExecute(execution);
     }
 

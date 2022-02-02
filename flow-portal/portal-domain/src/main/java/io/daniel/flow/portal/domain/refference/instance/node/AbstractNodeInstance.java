@@ -40,7 +40,6 @@ public abstract class AbstractNodeInstance<T extends AbstractNodeDefinition> imp
      * @param execution
      */
     protected void createEdgesAndAutoExecute(Execution execution) {
-        this.setState(NodeInstanceState.FINISH);
         createEdges(execution).forEach(edgeInstance -> edgeInstance.execute(execution));
     }
 
@@ -63,7 +62,7 @@ public abstract class AbstractNodeInstance<T extends AbstractNodeDefinition> imp
      */
     public void onSkip(Execution execution) {
         this.setState(NodeInstanceState.SKIPPED);
-        createEdges(execution).forEach(edgeInstance -> edgeInstance.execute(execution));
+        createEdgesAndAutoExecute(execution);
     }
 
 }
