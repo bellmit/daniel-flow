@@ -21,6 +21,7 @@
         <module>portal-app</module>
         <module>portal-domain</module>
         <module>portal-infrastructure</module>
+        <module>portal-infrastructure-impl</module>
     </modules>
 
     <dependencies>

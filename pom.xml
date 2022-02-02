@@ -41,9 +41,14 @@
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>QLExpress</artifactId>
-                <version>3.2.0</version>
+                <groupId>io.daniel.flow</groupId>
+                <artifactId>flow-portal</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>io.daniel.flow</groupId>
+                <artifactId>flow-executor</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
