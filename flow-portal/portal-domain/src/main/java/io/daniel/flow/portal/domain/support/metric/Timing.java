@@ -10,7 +10,9 @@ public interface Timing extends Metric<Long> {
 
     Long getEnd();
 
-    default Long getDuring() { return getEnd() - getStart();}
+    default Long getDuring() {
+        return getEnd() - getStart();
+    }
 
     @Override
     default Long getMetric() {

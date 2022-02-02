@@ -8,7 +8,7 @@ import io.daniel.flow.portal.domain.enums.NodeType;
  * @author neason-cn
  * @date 2022/1/31
  */
-public interface Node<E extends Edge> extends Element<E>{
+public interface Node<E extends Edge> extends Element<E> {
 
     /**
      * Node的类型

@@ -10,9 +10,7 @@ import lombok.Getter;
 public enum Access implements Accessible {
 
     ALLOW(true),
-    DENY(false);
-
-    ;
+    DENY(false);;
 
     @Getter
     private final boolean allow;
@@ -31,7 +29,7 @@ public enum Access implements Accessible {
     }
 
     public static Access of(boolean value) {
-        return  value ? ALLOW : DENY;
+        return value ? ALLOW : DENY;
     }
 
 }

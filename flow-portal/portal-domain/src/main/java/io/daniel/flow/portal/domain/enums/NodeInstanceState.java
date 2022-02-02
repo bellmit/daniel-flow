@@ -14,9 +14,7 @@ public enum NodeInstanceState {
     FINISH("FINISH"),
     SKIPPED("SKIPPED"),
     CANCELED("CANCELED"),
-    ERROR("ERROR"),
-
-    ;
+    ERROR("ERROR"),;
 
     @Getter
     private final String state;

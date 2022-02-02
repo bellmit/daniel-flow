@@ -116,16 +116,16 @@ public class FlowInstance implements Instance<FlowDefinition> {
 
 
     protected StartNodeInstance findStart() {
-        for (AbstractNodeInstance<? extends AbstractNodeDefinition> node: nodes) {
+        for (AbstractNodeInstance<? extends AbstractNodeDefinition> node : nodes) {
             if (node.getType() == NodeType.START) {
-                return (StartNodeInstance)node;
+                return (StartNodeInstance) node;
             }
         }
         throw new RuntimeException("该流程实例不符合要求，未创建Start节点");
     }
 
     protected AbstractNodeInstance<? extends AbstractNodeDefinition> findNode(String nodeCode) {
-        for (AbstractNodeInstance<? extends AbstractNodeDefinition> node: nodes) {
+        for (AbstractNodeInstance<? extends AbstractNodeDefinition> node : nodes) {
             if (node.getDefinition().getDefinitionCode().equals(nodeCode)) {
                 return node;
             }
