@@ -2,6 +2,7 @@ package io.daniel.flow.portal.domain.aggregate;
 
 import io.daniel.flow.connector.domain.TaskExecuteResult;
 import io.daniel.flow.portal.domain.enums.FlowInstanceState;
+import io.daniel.flow.portal.domain.enums.NodeInstanceState;
 import io.daniel.flow.portal.domain.enums.NodeType;
 import io.daniel.flow.portal.domain.refference.context.Context;
 import io.daniel.flow.portal.domain.refference.context.Execution;
@@ -11,11 +12,14 @@ import io.daniel.flow.portal.domain.refference.instance.Instance;
 import io.daniel.flow.portal.domain.refference.instance.edge.EdgeInstance;
 import io.daniel.flow.portal.domain.refference.instance.node.AbstractNodeInstance;
 import io.daniel.flow.portal.domain.refference.instance.node.StartNodeInstance;
+import io.daniel.flow.portal.domain.refference.instance.node.TaskNodeInstance;
+import io.daniel.flow.portal.domain.refference.instance.task.TaskInstance;
 import lombok.Data;
 
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author neason-cn
@@ -47,16 +51,19 @@ public class FlowInstance implements Instance<FlowDefinition> {
         return execution;
     }
 
+    public Execution start() {
+        return start(null);
+    }
+
     /**
      * 开始一个流程实例
      */
-    public Execution start() {
-        Execution execution = initTransaction(null);
-        findStart().execute(execution);
-        return execution;
+    public Execution start(Map<String, String> params) {
+        return start(findStart(), params);
     }
 
-    public Execution start(StartNodeInstance startNode) {
+    public Execution start(StartNodeInstance startNode, Map<String, String> params) {
+        context.merge(params);
         Execution execution = initTransaction(null);
         startNode.execute(execution);
         return execution;
@@ -71,8 +78,8 @@ public class FlowInstance implements Instance<FlowDefinition> {
         return execution;
     }
 
-    public Execution resume(String nodeCode, Map<String, String> addition) {
-        context.merge(addition);
+    public Execution resume(String nodeCode, Map<String, String> params) {
+        context.merge(params);
         Execution execution = initTransaction(null);
         findNode(nodeCode).execute(execution);
         return execution;
@@ -87,10 +94,31 @@ public class FlowInstance implements Instance<FlowDefinition> {
         return execution;
     }
 
-    protected AbstractNodeInstance<? extends AbstractNodeDefinition> findStart() {
+    /**
+     * 跳过某一个节点
+     */
+    public Execution skip(String nodeCode) {
+        Execution execution = initTransaction(null);
+        findNode(nodeCode).onSkip(execution);
+        return execution;
+    }
+
+    /**
+     * 取消一个流程实例，返回当前正在运行的任务
+     * TODO：这些任务是否需要向Executor发送CancelCommand
+     */
+    public Execution cancel() {
+        Execution execution = initTransaction(null);
+        execution.setTasks(findRunningTask());
+        this.setState(FlowInstanceState.CANCELED);
+        return execution;
+    }
+
+
+    protected StartNodeInstance findStart() {
         for (AbstractNodeInstance<? extends AbstractNodeDefinition> node: nodes) {
             if (node.getType() == NodeType.START) {
-                return node;
+                return (StartNodeInstance)node;
             }
         }
         throw new RuntimeException("该流程实例不符合要求，未创建Start节点");
@@ -111,6 +139,32 @@ public class FlowInstance implements Instance<FlowDefinition> {
 
     public AbstractNodeInstance<? extends AbstractNodeDefinition> createNode(AbstractNodeDefinition definition) {
         return null;
+    }
+
+    /**
+     * 找到当前流程实例中正在运行的Task节点
+     */
+    private Set<TaskNodeInstance> findRunningNodes() {
+        Set<TaskNodeInstance> runningNodes = new HashSet<>();
+        nodes.forEach(node -> {
+            if (node.getState() == NodeInstanceState.PENDING) {
+                node.setState(NodeInstanceState.CANCELED);
+            }
+            if (node.getState() == NodeInstanceState.RUNNING && node instanceof TaskNodeInstance) {
+                TaskNodeInstance taskNode = (TaskNodeInstance) node;
+                runningNodes.add(taskNode);
+            }
+        });
+        return runningNodes;
+    }
+
+    /**
+     * 找到当前流程实例中正在运行的任务
+     */
+    private Set<TaskInstance> findRunningTask() {
+        return findRunningNodes().stream()
+                .map(TaskNodeInstance::getRunning)
+                .collect(Collectors.toSet());
     }
 
 }

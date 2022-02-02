@@ -40,10 +40,13 @@ public abstract class AbstractNodeInstance<T extends AbstractNodeDefinition> imp
      * @param execution
      */
     protected void createEdgesAndAutoExecute(Execution execution) {
-        createEdges(execution).forEach(edgeInstance -> edgeInstance.execute(execution));
         this.setState(NodeInstanceState.FINISH);
+        createEdges(execution).forEach(edgeInstance -> edgeInstance.execute(execution));
     }
 
+    /**
+     * 创建边
+     */
     private Set<EdgeInstance> createEdges(Execution execution) {
         FlowInstance flowInstance = execution.getFlowInstance();
         Set<EdgeInstance> edges = new HashSet<>();
@@ -53,6 +56,14 @@ public abstract class AbstractNodeInstance<T extends AbstractNodeDefinition> imp
         });
         this.outgoing = edges;
         return edges;
+    }
+
+    /**
+     * 跳过当前节点，重置状态，直接推进
+     */
+    public void onSkip(Execution execution) {
+        this.setState(NodeInstanceState.SKIPPED);
+        createEdges(execution).forEach(edgeInstance -> edgeInstance.execute(execution));
     }
 
 }
