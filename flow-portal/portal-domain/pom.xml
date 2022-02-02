@@ -11,4 +11,15 @@
 
     <artifactId>portal-domain</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>io.daniel.flow</groupId>
+            <artifactId>portal-infrastructure</artifactId>
+        </dependency>
+        <!-- 此处依赖impl有待优化 -->
+        <dependency>
+            <groupId>io.daniel.flow</groupId>
+            <artifactId>portal-infrastructure-impl</artifactId>
+        </dependency>
+    </dependencies>
 </project>

@@ -58,6 +58,11 @@
                 <artifactId>portal-infrastructure</artifactId>
                 <version>${portal.version}</version>
             </dependency>
+            <dependency>
+                <groupId>io.daniel.flow</groupId>
+                <artifactId>portal-infrastructure-impl</artifactId>
+                <version>${portal.version}</version>
+            </dependency>
 
             <!-- 三方依赖 -->
             <dependency>

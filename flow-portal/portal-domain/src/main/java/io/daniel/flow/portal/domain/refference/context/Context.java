@@ -19,6 +19,8 @@ public interface Context extends Serializable {
 
     <T> T extract(Expression expression, Class<T> type);
 
+    Map<String, Object> getAll();
+
     void merge(Map<String, String> addition);
 
     void clear();
