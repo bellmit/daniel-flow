@@ -22,7 +22,7 @@ public class QLExpressRunner implements ScriptRunner {
         try {
             result = ql.execute(script, convert(context), null, true, false);
         } catch (Exception e) {
-            throw new RuntimeException("QL表达式执行失败");
+            throw new RuntimeException("QL表达式执行失败", e);
         }
         return result;
     }
