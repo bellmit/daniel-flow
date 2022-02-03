@@ -8,6 +8,7 @@
     <artifactId>flow-parent</artifactId>
     <packaging>pom</packaging>
     <version>0.0.1-SNAPSHOT</version>
+
     <modules>
         <module>flow-portal</module>
         <module>flow-executor</module>
@@ -21,34 +22,28 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <spring.boot.version>2.6.3</spring.boot.version>
+        <project.version>0.0.1-SNAPSHOT</project.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-web</artifactId>
-                <version>${spring.boot.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok</artifactId>
-                <version>1.18.22</version>
-            </dependency>
+            <!-- 一方包管理 -->
             <dependency>
                 <groupId>io.daniel.flow</groupId>
                 <artifactId>flow-connector</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>io.daniel.flow</groupId>
                 <artifactId>flow-portal</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>io.daniel.flow</groupId>
                 <artifactId>flow-executor</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

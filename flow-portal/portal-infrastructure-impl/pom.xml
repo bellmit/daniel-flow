@@ -12,14 +12,19 @@
     <artifactId>portal-infrastructure-impl</artifactId>
 
     <dependencies>
+        <!-- infra 接口定义 -->
         <dependency>
             <groupId>io.daniel.flow</groupId>
             <artifactId>portal-infrastructure</artifactId>
         </dependency>
+
+        <!-- 实现所需的三方包 -->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>QLExpress</artifactId>
+            <version>3.2.0</version>
         </dependency>
+
     </dependencies>
 
 </project>

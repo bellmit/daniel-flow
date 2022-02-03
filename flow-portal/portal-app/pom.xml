@@ -12,14 +12,24 @@
     <artifactId>portal-app</artifactId>
 
     <dependencies>
+        <!-- 一方包 -->
         <dependency>
             <groupId>io.daniel.flow</groupId>
             <artifactId>portal-domain</artifactId>
         </dependency>
+
+        <!-- 二方包 -->
         <dependency>
             <groupId>io.daniel.flow</groupId>
             <artifactId>flow-connector</artifactId>
         </dependency>
+
+        <!-- 三方包 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>
