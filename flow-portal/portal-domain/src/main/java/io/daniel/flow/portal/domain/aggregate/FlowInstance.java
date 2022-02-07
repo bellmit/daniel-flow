@@ -159,7 +159,7 @@ public class FlowInstance implements Instance<FlowDefinition> {
         return nodes.stream()
                 .filter(node -> node.getDefinition().getDefinitionCode().equals(definition.getDefinitionCode()))
                 .findFirst()
-                .get();
+                .orElse(null);
     }
 
     /**
@@ -200,7 +200,7 @@ public class FlowInstance implements Instance<FlowDefinition> {
         return edges.stream()
                 .filter(edge -> edge.getDefinition().getDefinitionCode().equals(definition.getDefinitionCode()))
                 .findFirst()
-                .get();
+                .orElse(null);
     }
 
     /**
