@@ -5,4 +5,8 @@ package io.daniel.flow.connector.domain.enums;
  * @date 2022/2/1
  */
 public enum CommandType {
+
+    EXECUTE,
+    CANCEL
+
 }

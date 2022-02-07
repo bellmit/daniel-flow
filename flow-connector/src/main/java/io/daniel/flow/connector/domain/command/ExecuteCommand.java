@@ -1,6 +1,8 @@
 package io.daniel.flow.connector.domain.command;
 
 import io.daniel.flow.connector.domain.enums.CommandType;
+import io.daniel.flow.connector.domain.task.BaseTask;
+import lombok.Data;
 
 import java.util.Map;
 
@@ -10,12 +12,11 @@ import java.util.Map;
  * @author neason-cn
  * @date 2022/2/1
  */
-public interface ExecuteCommand<T> {
+@Data
+public class ExecuteCommand {
 
-    CommandType commandType();
-
-    Map<String, String> headers();
-
-    T body();
+    private CommandType type;
+    private Map<String, String> headers;
+    private BaseTask body;
 
 }
