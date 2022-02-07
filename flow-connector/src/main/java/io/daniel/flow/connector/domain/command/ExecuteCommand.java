@@ -4,6 +4,7 @@ import io.daniel.flow.connector.domain.enums.CommandType;
 import io.daniel.flow.connector.domain.task.BaseTask;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -13,7 +14,7 @@ import java.util.Map;
  * @date 2022/2/1
  */
 @Data
-public class ExecuteCommand {
+public class ExecuteCommand implements Serializable {
 
     private CommandType type;
     private Map<String, String> headers;

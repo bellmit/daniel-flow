@@ -13,8 +13,9 @@ public interface PortalAdaptor {
 
     /**
      * Portal向Executor发送命令
+     * 如果adaptor支持同步调用，当portal向executor发送任务，同步等待执行结果
      */
-    void publishCommand(ExecuteCommand command);
+    TaskExecuteResult publishCommand(ExecuteCommand command);
 
     /**
      * Portal接收Executor执行的结果

@@ -12,18 +12,50 @@
     <artifactId>flow-executor</artifactId>
     <packaging>pom</packaging>
     <version>0.0.1-SNAPSHOT</version>
+
+    <properties>
+        <executor.version>0.0.1-SNAPSHOT</executor.version>
+        <connector.version>0.0.1-SNAPSHOT</connector.version>
+    </properties>
+
     <modules>
         <module>executor-app</module>
         <module>executor-domain</module>
     </modules>
 
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-            <version>2.6.3</version>
-        </dependency>
+
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- executor 一方包 -->
+            <dependency>
+                <groupId>io.daniel.flow</groupId>
+                <artifactId>executor-app</artifactId>
+                <version>${executor.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.daniel.flow</groupId>
+                <artifactId>executor-domain</artifactId>
+                <version>${executor.version}</version>
+            </dependency>
+
+            <!-- connector module -->
+            <dependency>
+                <groupId>io.daniel.flow</groupId>
+                <artifactId>flow-connector</artifactId>
+                <version>${connector.version}</version>
+            </dependency>
+
+            <!-- 三方包 -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-web</artifactId>
+                <version>2.6.3</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
 
 </project>

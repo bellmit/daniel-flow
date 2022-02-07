@@ -12,6 +12,8 @@ import java.util.List;
 @Data
 public class TaskExecuteResult {
 
+    private String errorCode;
+    private String errorMessage;
     private String flowInstanceId;
     private String nodeCode;
     private String taskId;

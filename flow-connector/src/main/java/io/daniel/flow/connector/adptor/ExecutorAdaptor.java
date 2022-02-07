@@ -18,7 +18,8 @@ public interface ExecutorAdaptor {
 
     /**
      * Executor接收Portal发送的命令
+     * 如果adaptor支持同步调用，当接收到command，直接执行返回结果
      */
-    void onReceiveCommand(ExecuteCommand command);
+    TaskExecuteResult onReceiveCommand(ExecuteCommand command);
 
 }
