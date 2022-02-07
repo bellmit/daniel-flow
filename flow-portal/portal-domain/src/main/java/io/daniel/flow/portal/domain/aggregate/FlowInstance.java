@@ -73,9 +73,7 @@ public class FlowInstance implements Instance<FlowDefinition> {
      * 推进一个流程节点
      */
     public Execution resume(String nodeCode) {
-        Execution execution = initTransaction(null);
-        findNode(nodeCode).execute(execution);
-        return execution;
+        return resume(nodeCode, null);
     }
 
     public Execution resume(String nodeCode, Map<String, String> params) {
@@ -147,11 +145,14 @@ public class FlowInstance implements Instance<FlowDefinition> {
     private Set<TaskNodeInstance> findRunningNodes() {
         Set<TaskNodeInstance> runningNodes = new HashSet<>();
         nodes.forEach(node -> {
+            // PENDING状态的node只需要修改一下状态
             if (node.getState() == NodeInstanceState.PENDING) {
                 node.setState(NodeInstanceState.CANCELED);
             }
+            //  RUNNING状态的node找出正在running的task
             if (node.getState() == NodeInstanceState.RUNNING && node instanceof TaskNodeInstance) {
                 TaskNodeInstance taskNode = (TaskNodeInstance) node;
+                node.setState(NodeInstanceState.CANCELED);
                 runningNodes.add(taskNode);
             }
         });
