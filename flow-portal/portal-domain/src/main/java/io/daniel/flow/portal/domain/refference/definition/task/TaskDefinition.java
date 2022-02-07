@@ -46,6 +46,11 @@ public class TaskDefinition implements Definition {
      */
     private String resultKey;
 
+    /**
+     * 是否开启异步处理
+     */
+    private boolean enableAsync;
+
 
     @Override
     public String getDefinitionCode() {

@@ -16,8 +16,13 @@ import java.util.Map;
 @Data
 public class ExecuteCommand implements Serializable {
 
-    private CommandType type;
+    /**
+     * keys:
+     * x-flow-command-type: 命令类型
+     * x-flow-task-type :   任务类型
+     */
     private Map<String, String> headers;
+
     private BaseTask body;
 
 }
