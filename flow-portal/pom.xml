@@ -37,7 +37,6 @@
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
 
-
             <!-- portal module -->
             <dependency>
                 <groupId>io.daniel.flow</groupId>
