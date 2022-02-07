@@ -27,7 +27,6 @@ public class TaskNodeInstance extends AbstractNodeInstance<TaskNodeDefinition> {
     private TaskInstance running;
     private TaskInstance canceled;
     private List<TaskDefinition> left;
-    private JoinMode joinMode;
 
     @Override
     public TaskNodeDefinition getDefinition() {
@@ -58,7 +57,7 @@ public class TaskNodeInstance extends AbstractNodeInstance<TaskNodeDefinition> {
      * 是否满足join条件
      */
     private boolean canAccept() {
-        if (joinMode == JoinMode.WAIT_ANY) {
+        if (definition.getJoinMode() == JoinMode.WAIT_ANY) {
             return incoming.stream()
                     .anyMatch(edgeInstance -> edgeInstance.isAccess().isAllow());
         } else {

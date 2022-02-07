@@ -1,6 +1,7 @@
 package io.daniel.flow.portal.domain.aggregate;
 
 import io.daniel.flow.connector.domain.TaskExecuteResult;
+import io.daniel.flow.portal.domain.enums.EdgeInstanceState;
 import io.daniel.flow.portal.domain.enums.FlowInstanceState;
 import io.daniel.flow.portal.domain.enums.NodeInstanceState;
 import io.daniel.flow.portal.domain.enums.NodeType;
@@ -11,11 +12,13 @@ import io.daniel.flow.portal.domain.refference.definition.node.AbstractNodeDefin
 import io.daniel.flow.portal.domain.refference.instance.Instance;
 import io.daniel.flow.portal.domain.refference.instance.edge.EdgeInstance;
 import io.daniel.flow.portal.domain.refference.instance.node.AbstractNodeInstance;
+import io.daniel.flow.portal.domain.refference.instance.node.EndNodeInstance;
 import io.daniel.flow.portal.domain.refference.instance.node.StartNodeInstance;
 import io.daniel.flow.portal.domain.refference.instance.node.TaskNodeInstance;
 import io.daniel.flow.portal.domain.refference.instance.task.TaskInstance;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -111,7 +114,9 @@ public class FlowInstance implements Instance<FlowDefinition> {
         return execution;
     }
 
-
+    /**
+     * 找到Start节点
+     */
     protected StartNodeInstance findStart() {
         for (AbstractNodeInstance<? extends AbstractNodeDefinition> node : nodes) {
             if (node.getType() == NodeType.START) {
@@ -121,6 +126,9 @@ public class FlowInstance implements Instance<FlowDefinition> {
         throw new RuntimeException("该流程实例不符合要求，未创建Start节点");
     }
 
+    /**
+     * 根据node实例code找到instance
+     */
     protected AbstractNodeInstance<? extends AbstractNodeDefinition> findNode(String nodeCode) {
         for (AbstractNodeInstance<? extends AbstractNodeDefinition> node : nodes) {
             if (node.getDefinition().getDefinitionCode().equals(nodeCode)) {
@@ -130,19 +138,75 @@ public class FlowInstance implements Instance<FlowDefinition> {
         throw new RuntimeException("该流程实例未找到相应的节点实例");
     }
 
+    /**
+     * 创建edge的实例
+     */
     public EdgeInstance createEdge(EdgeDefinition definition) {
-        return null;
+        EdgeInstance edgeInstance = new EdgeInstance();
+        edgeInstance.setDefinition(definition);
+        edgeInstance.setState(EdgeInstanceState.INIT);
+        edgeInstance.setSource(findNodeInstanceByDefinition(definition.getSource()));
+        // 创建边的时候source还没有被实例化
+        edgeInstance.setTarget(null);
+        edges.add(edgeInstance);
+        return edgeInstance;
     }
 
+    /**
+     * 根据node的definition找到对应的instance
+     */
+    private AbstractNodeInstance<? extends AbstractNodeDefinition> findNodeInstanceByDefinition(AbstractNodeDefinition definition) {
+        return nodes.stream()
+                .filter(node -> node.getDefinition().getDefinitionCode().equals(definition.getDefinitionCode()))
+                .findFirst()
+                .get();
+    }
+
+    /**
+     * 创建node的实例
+     */
     public AbstractNodeInstance<? extends AbstractNodeDefinition> createNode(AbstractNodeDefinition definition) {
-        return null;
+        AbstractNodeInstance<? extends AbstractNodeDefinition> nodeInstance = null;
+        switch (definition.getType()) {
+            case START:
+                nodeInstance = new StartNodeInstance();
+                break;
+            case END:
+                nodeInstance = new EndNodeInstance();
+                break;
+            case TASK:
+            default:
+                TaskNodeInstance taskNodeInstance = new TaskNodeInstance();
+                taskNodeInstance.setDone(new ArrayList<>());
+                taskNodeInstance.setLeft(new ArrayList<>());
+                nodeInstance = taskNodeInstance;
+        }
+        nodeInstance.setState(NodeInstanceState.INIT);
+
+        Set<EdgeInstance> incoming = nodeInstance.getDefinition().getIncoming().stream()
+                .map(this::findInstanceByEdgeDefinition)
+                .collect(Collectors.toSet());
+        nodeInstance.setIncoming(incoming);
+        // 创建nodeInstance时outgoing的edge还没有实例化
+        nodeInstance.setOutgoing(null);
+        nodes.add(nodeInstance);
+        return nodeInstance;
+    }
+
+    /**
+     * 用edge的definition找到对应的instance
+     */
+    private EdgeInstance findInstanceByEdgeDefinition(EdgeDefinition definition) {
+        return edges.stream()
+                .filter(edge -> edge.getDefinition().getDefinitionCode().equals(definition.getDefinitionCode()))
+                .findFirst()
+                .get();
     }
 
     /**
      * 找到当前流程实例中正在运行的Task节点
      */
     private Set<TaskNodeInstance> findRunningNodes() {
-        Set<TaskNodeInstance> runningNodes = new HashSet<>();
         return nodes.stream()
                 .filter(node -> node.getType() == NodeType.TASK)
                 .map(node -> (TaskNodeInstance)node)
