@@ -103,12 +103,11 @@ public class FlowInstance implements Instance<FlowDefinition> {
 
     /**
      * 取消一个流程实例，返回当前正在运行的任务
-     * TODO：这些任务是否需要向Executor发送CancelCommand
      */
     public Execution cancel() {
         Execution execution = initTransaction(null);
-        execution.setTasks(findRunningTask());
         this.setState(FlowInstanceState.CANCELED);
+        findRunningNodes().forEach(node -> node.onCancel(execution));
         return execution;
     }
 
@@ -144,19 +143,11 @@ public class FlowInstance implements Instance<FlowDefinition> {
      */
     private Set<TaskNodeInstance> findRunningNodes() {
         Set<TaskNodeInstance> runningNodes = new HashSet<>();
-        nodes.forEach(node -> {
-            // PENDING状态的node只需要修改一下状态
-            if (node.getState() == NodeInstanceState.PENDING) {
-                node.setState(NodeInstanceState.CANCELED);
-            }
-            //  RUNNING状态的node找出正在running的task
-            if (node.getState() == NodeInstanceState.RUNNING && node instanceof TaskNodeInstance) {
-                TaskNodeInstance taskNode = (TaskNodeInstance) node;
-                node.setState(NodeInstanceState.CANCELED);
-                runningNodes.add(taskNode);
-            }
-        });
-        return runningNodes;
+        return nodes.stream()
+                .filter(node -> node.getType() == NodeType.TASK)
+                .map(node -> (TaskNodeInstance)node)
+                .filter(node -> node.getState() == NodeInstanceState.RUNNING)
+                .collect(Collectors.toSet());
     }
 
     /**

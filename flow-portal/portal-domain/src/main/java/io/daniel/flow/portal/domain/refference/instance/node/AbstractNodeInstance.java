@@ -65,4 +65,9 @@ public abstract class AbstractNodeInstance<T extends AbstractNodeDefinition> imp
         createEdgesAndAutoExecute(execution);
     }
 
+    /**
+     * 取消/中断一个节点
+     */
+    public abstract void onCancel(Execution execution);
+
 }

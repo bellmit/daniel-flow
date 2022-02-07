@@ -25,6 +25,7 @@ public class TaskNodeInstance extends AbstractNodeInstance<TaskNodeDefinition> {
     private TaskNodeDefinition definition;
     private List<TaskInstance> done;
     private TaskInstance running;
+    private TaskInstance canceled;
     private List<TaskDefinition> left;
     private JoinMode joinMode;
 
@@ -121,6 +122,16 @@ public class TaskNodeInstance extends AbstractNodeInstance<TaskNodeDefinition> {
 
     private TaskDefinition popTask() {
         return left.get(0);
+    }
+
+    @Override
+    public void onCancel(Execution execution) {
+        if (state == NodeInstanceState.RUNNING) {
+            running.setState(TaskResultState.CANCELED);
+            this.state = NodeInstanceState.CANCELED;
+            canceled = running.clone();
+            execution.getTasks().add(canceled);
+        }
     }
 
 }

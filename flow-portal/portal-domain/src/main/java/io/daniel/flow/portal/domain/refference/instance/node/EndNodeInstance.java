@@ -15,11 +15,11 @@ import java.util.Set;
  */
 public class EndNodeInstance extends AbstractNodeInstance<EndNodeDefinition> {
 
-    private EndNodeDefinition defition;
+    private EndNodeDefinition definition;
 
     @Override
     public EndNodeDefinition getDefinition() {
-        return defition;
+        return definition;
     }
 
     @Override
@@ -35,5 +35,10 @@ public class EndNodeInstance extends AbstractNodeInstance<EndNodeDefinition> {
     @Override
     public Set<EdgeInstance> outgoing() {
         return Collections.emptySet();
+    }
+
+    @Override
+    public void onCancel(Execution execution) {
+        throw new UnsupportedOperationException();
     }
 }

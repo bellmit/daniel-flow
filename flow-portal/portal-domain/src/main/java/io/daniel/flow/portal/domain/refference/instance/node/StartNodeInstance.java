@@ -40,4 +40,9 @@ public class StartNodeInstance extends AbstractNodeInstance<StartNodeDefinition>
         return Collections.emptySet();
     }
 
+    @Override
+    public void onCancel(Execution execution) {
+        throw new UnsupportedOperationException();
+    }
+
 }

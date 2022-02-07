@@ -7,6 +7,7 @@ package io.daniel.flow.connector.domain.enums;
 public enum TaskResultState {
 
     RUNNING,
+    CANCELED,
     FAIL,
     SUCCESS;
 
