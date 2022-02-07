@@ -61,7 +61,9 @@ public class TaskNodeInstance extends AbstractNodeInstance<TaskNodeDefinition> {
             return incoming.stream()
                     .anyMatch(edgeInstance -> edgeInstance.isAccess().isAllow());
         } else {
-            return incoming.stream()
+            // incoming只有到到达了的edge，没有到达的还没有被实例化，所以要加一个size的判断
+            return incoming.size() == definition.incoming().size() &&
+                    incoming.stream()
                     .allMatch(edgeInstance -> edgeInstance.isAccess().isAllow());
         }
     }

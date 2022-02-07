@@ -1,9 +1,7 @@
 package io.daniel.flow.portal.domain.refference.instance.edge;
 
-import com.ql.util.express.ExpressRunner;
 import io.daniel.flow.portal.domain.enums.Access;
 import io.daniel.flow.portal.domain.enums.EdgeInstanceState;
-import io.daniel.flow.portal.domain.refference.context.Context;
 import io.daniel.flow.portal.domain.refference.context.Execution;
 import io.daniel.flow.portal.domain.refference.definition.edge.EdgeDefinition;
 import io.daniel.flow.portal.domain.refference.definition.node.AbstractNodeDefinition;
@@ -91,7 +89,8 @@ public class EdgeInstance implements Edge<AbstractNodeInstance<? extends Abstrac
      * 创建后续节点并执行
      */
     private void createNodesAndAutoExecute(Execution execution) {
-        AbstractNodeInstance<? extends AbstractNodeDefinition> node = execution.getFlowInstance().createNode(definition.getTarget());
+        AbstractNodeInstance<? extends AbstractNodeDefinition> node =
+                execution.getFlowInstance().getOrCreateNode(definition.getTarget(), this);
         node.execute(execution);
     }
 

@@ -12,7 +12,7 @@ import lombok.Data;
  * @date 2022/2/1
  */
 @Data
-public class TaskInstance implements Instance<TaskDefinition>, Action, Cloneable {
+public class TaskInstance implements Instance<TaskDefinition>, Cloneable {
 
     private TaskDefinition definition;
     private TaskResultState state;
@@ -21,10 +21,6 @@ public class TaskInstance implements Instance<TaskDefinition>, Action, Cloneable
     @Override
     public TaskDefinition getDefinition() {
         return definition;
-    }
-
-    @Override
-    public void execute(Execution execution) {
     }
 
     @Override

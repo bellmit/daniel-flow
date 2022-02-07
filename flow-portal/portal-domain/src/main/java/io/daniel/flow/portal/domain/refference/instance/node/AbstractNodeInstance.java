@@ -50,7 +50,7 @@ public abstract class AbstractNodeInstance<T extends AbstractNodeDefinition> imp
         FlowInstance flowInstance = execution.getFlowInstance();
         Set<EdgeInstance> edges = new HashSet<>();
         this.getDefinition().getOutgoing().forEach(definition -> {
-            EdgeInstance edge = flowInstance.createEdge(definition);
+            EdgeInstance edge = flowInstance.createEdge(definition, this);
             edges.add(edge);
         });
         this.outgoing = edges;
