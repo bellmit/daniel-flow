@@ -1,4 +1,4 @@
-package io.daniel.flow.executor.service;
+package io.daniel.flow.executor.service.task;
 
 import io.daniel.flow.connector.domain.command.ExecuteCommand;
 import io.daniel.flow.executor.domain.executor.TaskExecutor;
