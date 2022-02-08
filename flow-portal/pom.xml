@@ -22,6 +22,7 @@
         <module>portal-domain</module>
         <module>portal-infrastructure</module>
         <module>portal-infrastructure-impl</module>
+        <module>portal-service</module>
     </modules>
 
     <dependencies>
@@ -56,6 +57,11 @@
             <dependency>
                 <groupId>io.daniel.flow</groupId>
                 <artifactId>portal-infrastructure-impl</artifactId>
+                <version>${portal.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.daniel.flow</groupId>
+                <artifactId>portal-service</artifactId>
                 <version>${portal.version}</version>
             </dependency>
 

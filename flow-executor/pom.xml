@@ -21,11 +21,8 @@
     <modules>
         <module>executor-app</module>
         <module>executor-domain</module>
+        <module>executor-service</module>
     </modules>
-
-    <dependencies>
-
-    </dependencies>
 
     <dependencyManagement>
         <dependencies>
@@ -38,6 +35,11 @@
             <dependency>
                 <groupId>io.daniel.flow</groupId>
                 <artifactId>executor-domain</artifactId>
+                <version>${executor.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.daniel.flow</groupId>
+                <artifactId>executor-service</artifactId>
                 <version>${executor.version}</version>
             </dependency>
 
