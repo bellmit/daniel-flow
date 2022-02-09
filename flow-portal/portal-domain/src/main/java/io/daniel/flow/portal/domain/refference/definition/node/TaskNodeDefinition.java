@@ -5,8 +5,6 @@ import io.daniel.flow.portal.domain.enums.NodeType;
 import io.daniel.flow.portal.domain.refference.definition.task.TaskDefinition;
 import lombok.Data;
 
-import java.util.List;
-
 /**
  * 任务节点的定义
  *
@@ -17,7 +15,7 @@ import java.util.List;
 public class TaskNodeDefinition extends AbstractNodeDefinition {
 
     private JoinMode joinMode;
-    private List<TaskDefinition> tasks;
+    private TaskDefinition taskDefinition;
 
     public NodeType getType() {
         return NodeType.TASK;

@@ -1,8 +1,11 @@
 package io.daniel.flow.portal.domain.refference.definition.task;
 
 import io.daniel.flow.connector.domain.enums.TaskType;
+import io.daniel.flow.portal.domain.refference.context.Expression;
 import io.daniel.flow.portal.domain.refference.definition.Definition;
 import lombok.Data;
+
+import java.util.Map;
 
 /**
  * 任务配置
@@ -51,6 +54,10 @@ public class TaskDefinition implements Definition {
      */
     private boolean enableAsync;
 
+    /**
+     * 该任务所需要的参数列表
+     */
+    private Map<String, Expression> params;
 
     @Override
     public String getDefinitionCode() {

@@ -22,6 +22,11 @@
             <groupId>io.daniel.flow</groupId>
             <artifactId>flow-connector</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
         
     </dependencies>
 </project>

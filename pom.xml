@@ -45,6 +45,12 @@
                 <artifactId>flow-executor</artifactId>
                 <version>${project.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>1.2.79</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

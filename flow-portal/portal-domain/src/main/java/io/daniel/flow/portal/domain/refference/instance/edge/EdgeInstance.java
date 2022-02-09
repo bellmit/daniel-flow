@@ -2,6 +2,7 @@ package io.daniel.flow.portal.domain.refference.instance.edge;
 
 import io.daniel.flow.portal.domain.enums.Access;
 import io.daniel.flow.portal.domain.enums.EdgeInstanceState;
+import io.daniel.flow.portal.domain.refference.context.ContextConstant;
 import io.daniel.flow.portal.domain.refference.context.Execution;
 import io.daniel.flow.portal.domain.refference.definition.edge.EdgeDefinition;
 import io.daniel.flow.portal.domain.refference.definition.node.AbstractNodeDefinition;
@@ -18,6 +19,7 @@ import lombok.Data;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -99,7 +101,8 @@ public class EdgeInstance implements Edge<AbstractNodeInstance<? extends Abstrac
     private boolean runScript(Execution execution) {
         ScriptRunner runner = new QLExpressRunner();
         String script = ScriptUtil.extract(definition.getCondition());
-        Map<String, Object> context = execution.getFlowInstance().getContext().getAll();
+        Map<String, Object> context = new HashMap<>();
+        context.put(ContextConstant.KEY_IN_QL_CONTEXT, execution.getFlowInstance().getContext().getAll());
         return runner.run(script, context, boolean.class);
     }
 

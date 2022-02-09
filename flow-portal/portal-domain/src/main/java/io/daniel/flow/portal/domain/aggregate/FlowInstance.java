@@ -178,10 +178,7 @@ public class FlowInstance implements Instance<FlowDefinition> {
                 break;
             case TASK:
             default:
-                TaskNodeInstance taskNodeInstance = new TaskNodeInstance();
-                taskNodeInstance.setDone(new ArrayList<>());
-                taskNodeInstance.setLeft(new ArrayList<>());
-                nodeInstance = taskNodeInstance;
+                nodeInstance = new TaskNodeInstance();
         }
         nodeInstance.setState(NodeInstanceState.INIT);
 

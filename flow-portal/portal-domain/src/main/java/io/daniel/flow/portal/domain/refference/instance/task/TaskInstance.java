@@ -1,11 +1,11 @@
 package io.daniel.flow.portal.domain.refference.instance.task;
 
 import io.daniel.flow.connector.domain.enums.TaskResultState;
-import io.daniel.flow.portal.domain.refference.context.Execution;
 import io.daniel.flow.portal.domain.refference.definition.task.TaskDefinition;
 import io.daniel.flow.portal.domain.refference.instance.Instance;
-import io.daniel.flow.portal.domain.support.Action;
 import lombok.Data;
+
+import java.util.Map;
 
 /**
  * @author neason-cn
@@ -16,6 +16,7 @@ public class TaskInstance implements Instance<TaskDefinition>, Cloneable {
 
     private TaskDefinition definition;
     private TaskResultState state;
+    private Map<String, String> params;
     private String result;
 
     @Override

@@ -2,7 +2,6 @@ package io.daniel.flow.portal.domain.refference.instance.node;
 
 import io.daniel.flow.connector.domain.TaskExecuteResult;
 import io.daniel.flow.connector.domain.enums.TaskResultState;
-import io.daniel.flow.portal.domain.enums.FlowInstanceState;
 import io.daniel.flow.portal.domain.enums.JoinMode;
 import io.daniel.flow.portal.domain.enums.NodeInstanceState;
 import io.daniel.flow.portal.domain.enums.NodeType;
@@ -10,10 +9,11 @@ import io.daniel.flow.portal.domain.refference.context.Execution;
 import io.daniel.flow.portal.domain.refference.definition.node.TaskNodeDefinition;
 import io.daniel.flow.portal.domain.refference.definition.task.TaskDefinition;
 import io.daniel.flow.portal.domain.refference.instance.task.TaskInstance;
+import io.daniel.flow.portal.domain.util.ContextUtil;
 import lombok.Data;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.Map;
 
 /**
  * @author neason-cn
@@ -23,10 +23,7 @@ import java.util.List;
 public class TaskNodeInstance extends AbstractNodeInstance<TaskNodeDefinition> {
 
     private TaskNodeDefinition definition;
-    private List<TaskInstance> done;
-    private TaskInstance running;
-    private TaskInstance canceled;
-    private List<TaskDefinition> left;
+    private TaskInstance taskInstance;
 
     @Override
     public TaskNodeDefinition getDefinition() {
@@ -38,9 +35,11 @@ public class TaskNodeInstance extends AbstractNodeInstance<TaskNodeDefinition> {
         if (canAccept()) {
             if (canResume()) {
                 if (execution.getCallback() != null) {
+                    // 处理callback
                     handleCallback(execution);
                 } else {
-                    popAndRunNewTask(execution);
+                    // 没有callback代表是第一次触发
+                    runTask(execution);
                 }
             }
         } else {
@@ -64,7 +63,7 @@ public class TaskNodeInstance extends AbstractNodeInstance<TaskNodeDefinition> {
             // incoming只有到到达了的edge，没有到达的还没有被实例化，所以要加一个size的判断
             return incoming.size() == definition.incoming().size() &&
                     incoming.stream()
-                    .allMatch(edgeInstance -> edgeInstance.isAccess().isAllow());
+                            .allMatch(edgeInstance -> edgeInstance.isAccess().isAllow());
         }
     }
 
@@ -87,51 +86,33 @@ public class TaskNodeInstance extends AbstractNodeInstance<TaskNodeDefinition> {
 
     private void handleCallback(Execution execution) {
         TaskExecuteResult callback = execution.getCallback();
+        taskInstance.setState(callback.getState());
+        taskInstance.setResult(callback.getData());
         if (callback.getState() == TaskResultState.SUCCESS) {
-            done.add(running.clone());
-            running = null;
-            if (allTaskDone()) {
-                this.setState(NodeInstanceState.FINISH);
-                createEdgesAndAutoExecute(execution);
-            } else {
-                TaskDefinition taskDefinition = popTask();
-                if (taskDefinition.isEnableAutoResume()) {
-                    popAndRunNewTask(execution);
-                } else {
-                    keepWaiting();
-                }
-            }
+            this.setState(NodeInstanceState.FINISH);
+            taskInstance.setState(TaskResultState.SUCCESS);
+            createEdgesAndAutoExecute(execution);
         } else {
             this.setState(NodeInstanceState.ERROR);
-            execution.getFlowInstance().setState(FlowInstanceState.ERROR);
         }
-
     }
 
-    private boolean allTaskDone() {
-        return left == null || popTask() == null;
-    }
-
-    private void popAndRunNewTask(Execution execution) {
-        TaskDefinition taskDefinition = popTask();
+    private void runTask(Execution execution) {
+        TaskDefinition taskDefinition = definition.getTaskDefinition();
         TaskInstance taskInstance = new TaskInstance();
         taskInstance.setDefinition(taskDefinition);
         taskInstance.setState(TaskResultState.RUNNING);
-        running = taskInstance;
+        Map<String, String> params = ContextUtil.contextMapConvert(taskDefinition.getParams(), execution.getFlowInstance().getContext());
+        taskInstance.setParams(params);
         execution.getTasks().add(taskInstance);
-    }
-
-    private TaskDefinition popTask() {
-        return left.get(0);
     }
 
     @Override
     public void onCancel(Execution execution) {
         if (state == NodeInstanceState.RUNNING) {
-            running.setState(TaskResultState.CANCELED);
+            taskInstance.setState(TaskResultState.CANCELED);
             this.state = NodeInstanceState.CANCELED;
-            canceled = running.clone();
-            execution.getTasks().add(canceled);
+            execution.getTasks().add(taskInstance);
         }
     }
 
