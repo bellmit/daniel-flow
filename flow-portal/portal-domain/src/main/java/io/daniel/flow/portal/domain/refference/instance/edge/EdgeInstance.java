@@ -15,6 +15,7 @@ import io.daniel.flow.portal.domain.util.ScriptUtil;
 import io.daniel.flow.portal.infra.impl.script.QLExpressRunner;
 import io.daniel.flow.portal.infra.script.ScriptRunner;
 import lombok.Data;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.Collections;
 import java.util.Map;
@@ -41,12 +42,19 @@ public class EdgeInstance implements Edge<AbstractNodeInstance<? extends Abstrac
 
     @Override
     public void execute(Execution execution) {
-        boolean result = runScript(execution);
-        if (result) {
+        if (hasScript()) {
+            boolean result = runScript(execution);
+            //  根据表达式运行结果进行状态更新
+            if (result) {
+                this.setState(EdgeInstanceState.ALLOW);
+                createNodesAndAutoExecute(execution);
+            } else {
+                this.setState(EdgeInstanceState.DENY);
+            }
+        } else {
+            // 没有配置判断表达式则默认是允许向后推进
             this.setState(EdgeInstanceState.ALLOW);
             createNodesAndAutoExecute(execution);
-        } else {
-            this.setState(EdgeInstanceState.DENY);
         }
     }
 
@@ -76,7 +84,17 @@ public class EdgeInstance implements Edge<AbstractNodeInstance<? extends Abstrac
     }
 
     /**
-     * 运行边上配置的条件
+     * 是否配置了判断表达式
+     */
+    private boolean hasScript() {
+        EdgeDefinition definition = this.definition;
+        return definition != null &&
+                definition.getCondition() != null &&
+                StringUtils.isNotEmpty(definition.getCondition().getExpression());
+    }
+
+    /**
+     * 运行边上配置的判断表达式
      */
     private boolean runScript(Execution execution) {
         ScriptRunner runner = new QLExpressRunner();
