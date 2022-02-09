@@ -50,12 +50,6 @@
                 <version>${connector.version}</version>
             </dependency>
 
-            <!-- 三方包 -->
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-web</artifactId>
-                <version>2.6.3</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 

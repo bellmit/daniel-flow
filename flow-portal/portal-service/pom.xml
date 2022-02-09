@@ -21,7 +21,6 @@
             <groupId>io.daniel.flow</groupId>
             <artifactId>portal-domain</artifactId>
         </dependency>
-
     </dependencies>
 
 </project>
